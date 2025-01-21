@@ -1,4 +1,4 @@
-#
+# Import necessary libraries
 import os
 import json
 from tkinter import *
@@ -6,18 +6,20 @@ from tkinter import messagebox
 from some_constants import *
 from tests import test_func as ts
 
-#
+# List of supported letters for categorization
 letters = ['ا','ب','ت','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-writers = []
-num_books = 0
-mian_dict_ids_books = {}
+# Initialize global variables
+writers = []          # List of unique writers
+num_books = 0         # Total number of books
+mian_dict_ids_books = {}  # Dictionary mapping book IDs to their titles
+# UI colors and settings
 ROOT_COLR = '#0A706B'
 ENTRY_COLR = '#DED3BA'
 FONT_COLR = '#C4AF82'
 COLR ='#AA6131'
 WHITE_MOOD = (ROOT_COLR,FONT_COLR,ENTRY_COLR,COLR)
-BOOKS = 'books.txt'
-#
+BOOKS = 'books.txt' # File storing book data
+# Load book data from file or initialize a new file if not found
 def ready():
     global num_books
     if os.path.exists(BOOKS):
@@ -35,12 +37,15 @@ def ready():
     else:
         with open(BOOKS,'w') as f:
             json.dump([],f)
+# Initialize book data on program start
 ready()
+
+# Calculate percentage-based values (utility function)
 def calu(big,rate):
     n1 = big * rate
     final = n1 // 100
     return final
-
+# Handle scrolling in the canvas view
 def change_yview(event=0):
     if len(main_canves.find_all()) == 1:
         return
@@ -51,14 +56,15 @@ def change_yview(event=0):
             main_canves.yview('scroll',1,'units')
 
 def put_books(let = None,writer = None):
+    # Clear the canvas
     for dele in main_canves.find_all():
         main_canves.delete(dele)
     main_dict = {}
     main_list = []
-    y_b= 0
-    tit = True
-    state = True
-    if let != None:
+    y_b = 0  # Vertical position tracker
+    tit = True  # Title flag
+    state = True  # State flag
+    if let != None: # Filter books by the first letter
         for i in main_canves.find_all():
             main_canves.delete(i)
         with open(BOOKS,'r') as f:
@@ -78,7 +84,7 @@ def put_books(let = None,writer = None):
                 tit = True
                 main_canves.config(scrollregion=main_canves.bbox('all')) 
     
-    elif writer != None:
+    elif writer != None: #Filter books by writer
         with open(BOOKS,'r') as f:
             data_ = json.load(f)
         for wirter_ in writers:
@@ -121,18 +127,10 @@ def put_books(let = None,writer = None):
 def close(event):
     global num_books
     root.state('zoomed')
-    '''
-    with open(BOOKS,'r') as f:
-        data = json.load(f)
-        num_books = len(data)
-        if len(data) != 0:
-            for writer in data:
-                if writer[1] not in writers:
-                     writers.append(writer[1])
-    '''
 
-def add_books():
-    def add_book():
+def add_books(): # create a 'add books' page
+    
+    def add_book(): # Actually function adding the book
         for lb in s_root.children.values():
             name = type(lb).__name__
             if name == 'Label':
@@ -194,7 +192,7 @@ def add_books():
     labe_size.place(x=x_lb,y=main_height-198)
     labe_type   = Label(s_root,bg=WHITE_MOOD[0],fg='black',text='Enter his type:')
     labe_type.place(x=x_lb,y=main_height-168)
-
+#Sort books
 def sort():
     if var_alp.get() == 1:
         put_books(let=0)
@@ -202,7 +200,7 @@ def sort():
         put_books(writer=0)
     else:
         put_books()
-
+#Serach func
 def serach(event):
     find = False
     if serach_entry.get():
@@ -232,7 +230,7 @@ def serach(event):
     else:
         messagebox.showerror('Error',"Pls enter book name")
         sort()
-
+#Edit func
 def edit(event):
     def edit_():
         find = False
@@ -266,6 +264,8 @@ def edit(event):
         else:
             messagebox.showerror('Error','Pls put an book you want to edit it')
             laabel0.config(fg='red')
+
+    #Put all widgets in the main page
     root_2 = Tk()
     root_2.title('Edit an book')
     root_2.geometry(f'350x250+{calu(main_width,36)}+{calu(main_height,28)}')
