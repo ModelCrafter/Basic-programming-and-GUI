@@ -111,6 +111,9 @@ This application is a Python-based GUI program for managing a personal library. 
 - Tkinter (comes pre-installed with Python)
 - JSON (standard Python library)
 
+## License
+This project is licensed under the Apache License 2.0.
+
 ## Developer
 ***Youssef Khaled***   
 
