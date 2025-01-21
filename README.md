@@ -112,7 +112,7 @@ This application is a Python-based GUI program for managing a personal library. 
 - JSON (standard Python library)
 
 ## Developer
-**Youssef Khaled**
+***Youssef Khaled***   
 
 
 
